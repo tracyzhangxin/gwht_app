@@ -24,7 +24,7 @@ public class NewsDetail extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        //toolbar.setTitle("GWHT");
+
         setContentView(R.layout.activity_news_detail);
         Intent intent = getIntent();
         String url = intent.getExtras().getString("url");

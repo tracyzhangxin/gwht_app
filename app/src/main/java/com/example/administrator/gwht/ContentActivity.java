@@ -1,5 +1,6 @@
 package com.example.administrator.gwht;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -10,27 +11,40 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Toast;
 
 import com.ashokvarma.bottomnavigation.BadgeItem;
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
+import com.baidu.android.pushservice.PushConstants;
+import com.baidu.android.pushservice.PushManager;
+import com.google.gson.Gson;
+
+import org.xutils.view.annotation.ContentView;
+import org.xutils.view.annotation.ViewInject;
 
 import java.util.ArrayList;
 
+import Model.NewsModel;
+import Tools.NewsJsonHelper;
+import Tools.NewsOpenHelper;
+
+@ContentView(R.layout.activity_content)
 public class ContentActivity extends BaseActivity implements  BottomNavigationBar.OnTabSelectedListener{
+    @ViewInject(R.id.toolbar)
+    private Toolbar toolbar;
     private ArrayList<Fragment> fragments;
     BadgeItem numberBadgeItem = new BadgeItem()
             .setBorderWidth(4)
             .setBackgroundColor(Color.RED)
-            .setText("5")
-            .setHideOnSelect(true);
+            .setHideOnSelect(false);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_content);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle("GWHT");
+
+       // Toast.makeText(this,"content",Toast.LENGTH_LONG).show();
 
         BottomNavigationBar bottomNavigationBar = (BottomNavigationBar) findViewById(R.id.bottom_navigation_bar);
         bottomNavigationBar.setMode(BottomNavigationBar.MODE_FIXED);
@@ -39,9 +53,9 @@ public class ContentActivity extends BaseActivity implements  BottomNavigationBa
                 );
 
         bottomNavigationBar
-                .addItem(new BottomNavigationItem(R.mipmap.ic_favorite_white_24dp, "收藏").setActiveColorResource(R.color.red).setBadgeItem(numberBadgeItem))
-                .addItem(new BottomNavigationItem(R.mipmap.ic_msg, "消息").setActiveColorResource(R.color.teal))
-                .addItem(new BottomNavigationItem(R.mipmap.ic_user, "用户").setActiveColorResource(R.color.grey).setBadgeItem(numberBadgeItem))
+                .addItem(new BottomNavigationItem(R.mipmap.ic_msg, "消息").setActiveColorResource(R.color.teal).setBadgeItem(numberBadgeItem))
+                .addItem(new BottomNavigationItem(R.mipmap.ic_user, "用户").setActiveColorResource(R.color.grey))
+                .addItem(new BottomNavigationItem(R.mipmap.ic_favorite_white_24dp, "收藏").setActiveColorResource(R.color.red))
                 .setFirstSelectedPosition(0)
                 .initialise();
 
@@ -57,15 +71,14 @@ public class ContentActivity extends BaseActivity implements  BottomNavigationBa
     private void setDefaultFragment() {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
-        transaction.replace(R.id.layFrame, UserFragment.newInstance("User"));
+        transaction.replace(R.id.layFrame, fragments.get(0));
         transaction.commit();
+
     }
     private ArrayList<Fragment> getFragments() {
         ArrayList<Fragment> fragments = new ArrayList<>();
-        fragments.add(UserFragment.newInstance("User"));
         fragments.add(MsgFragment.newInstance("Msg"));
-       /* fragments.add(MusicFragment.newInstance("Music"));
-        fragments.add(TvFragment.newInstance("Movies & TV"));*/
+        fragments.add(UserFragment.newInstance("User"));
         fragments.add(LoveFragment.newInstance("Love"));
         return fragments;
     }
@@ -74,7 +87,6 @@ public class ContentActivity extends BaseActivity implements  BottomNavigationBa
     public void onTabSelected(int position) {
 
         if (fragments != null) {
-            this.numberBadgeItem.setText("8");
             if (position < fragments.size()) {
                 FragmentManager fm = getSupportFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
@@ -107,4 +119,29 @@ public class ContentActivity extends BaseActivity implements  BottomNavigationBa
     public void onTabReselected(int position) {
 
     }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        String content = intent
+                .getStringExtra("pushStr");
+        if (!content.isEmpty()){
+            Toast.makeText(this,content,Toast.LENGTH_LONG).show();
+        }
+        NewsModel newsModel =NewsJsonHelper.pushJsonDecode(content);
+          if (newsModel.code==0){
+            NewsOpenHelper myHelper = new NewsOpenHelper(this, NewsOpenHelper.DB_NAME, null, 1);// 打开数据表库表
+            boolean flag=myHelper.insertNews(newsModel.data);
+            if (true)
+                Toast.makeText(this,"ok",Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+    public void updateNumberItem(){
+
+    }
+
+
 }

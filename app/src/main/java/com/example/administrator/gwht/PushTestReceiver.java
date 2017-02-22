@@ -1,6 +1,7 @@
 package com.example.administrator.gwht;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 import com.baidu.android.pushservice.PushMessageReceiver;
@@ -61,8 +62,8 @@ public class PushTestReceiver extends PushMessageReceiver {
                           String customContentString) {
         String messageString = "透传消息 message=\"" + message
                 + "\" customContentString=" + customContentString;
+        updateContent(context,message);
         Log.d(TAG, messageString);
-
 
     }
 
@@ -120,7 +121,7 @@ public class PushTestReceiver extends PushMessageReceiver {
      *            上下文
      * @param errorCode
      *            错误码。0表示某些tag已经设置成功；非0表示所有tag的设置均失败。
-     * @param successTags
+
      *            设置成功的tag
      * @param failTags
      *            设置失败的tag
@@ -144,7 +145,7 @@ public class PushTestReceiver extends PushMessageReceiver {
      *            上下文
      * @param errorCode
      *            错误码。0表示某些tag已经删除成功；非0表示所有tag均删除失败。
-     * @param successTags
+
      *            成功删除的tag
      * @param failTags
      *            删除失败的tag
@@ -200,5 +201,14 @@ public class PushTestReceiver extends PushMessageReceiver {
         Log.d(TAG, responseString);
 
 
+    }
+
+    private void updateContent(Context context, String content){
+        Log.d(TAG, "updateContent");
+        Intent intent = new Intent();
+        intent.putExtra("pushStr", content);
+        intent.setClass(context.getApplicationContext(), ContentActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.getApplicationContext().startActivity(intent);
     }
 }
