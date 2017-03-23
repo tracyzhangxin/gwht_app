@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import Model.NewsModel;
 import Tools.NewsJsonHelper;
 import Tools.NewsOpenHelper;
+import Tools.PreferenceUtil;
 
 @ContentView(R.layout.activity_content)
 public class ContentActivity extends BaseActivity implements  BottomNavigationBar.OnTabSelectedListener{
@@ -42,7 +43,16 @@ public class ContentActivity extends BaseActivity implements  BottomNavigationBa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setSupportActionBar(toolbar);
-        toolbar.setTitle("GWHT");
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+       /* toolbar.setNavigationIcon(R.drawable.left_arrow);
+         toolbar.setNavigationOnClickListener(new Toolbar.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 Intent intent = new Intent(ContentActivity.this, NewsActivity.class);
+                 ContentActivity.this.startActivity(intent);
+                 ContentActivity.this.finish();
+             }
+         });*/
 
        // Toast.makeText(this,"content",Toast.LENGTH_LONG).show();
 
@@ -61,6 +71,7 @@ public class ContentActivity extends BaseActivity implements  BottomNavigationBa
 
         fragments = getFragments();
         setDefaultFragment();
+        numberBadgeItem.hide();
         bottomNavigationBar.setTabSelectedListener(this);
 
     }
@@ -85,7 +96,7 @@ public class ContentActivity extends BaseActivity implements  BottomNavigationBa
 
     @Override
     public void onTabSelected(int position) {
-
+        updateNumberItem();
         if (fragments != null) {
             if (position < fragments.size()) {
                 FragmentManager fm = getSupportFragmentManager();
@@ -136,10 +147,18 @@ public class ContentActivity extends BaseActivity implements  BottomNavigationBa
             if (true)
                 Toast.makeText(this,"ok",Toast.LENGTH_LONG).show();
         }
+        updateNumberItem();
 
     }
-
+    //接收到新的信息时numberBadgeItem+1
     public void updateNumberItem(){
+       NewsOpenHelper myHelper = new NewsOpenHelper(this, NewsOpenHelper.DB_NAME, null, 1);// 打开数据表库表，
+        int num=myHelper.getNoReadNum();
+        if (num==0)
+            numberBadgeItem.hide();
+        else{
+            numberBadgeItem.setText(String.valueOf(num)).show();
+        }
 
     }
 

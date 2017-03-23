@@ -11,8 +11,11 @@ public class LayoutMessage {
     private String content;//新闻内容
     private int pic;//新闻图片
     private int tag;
+    private int isRead;
     private Bitmap pic_net;
     private String url;
+    public int getIsRead(){return isRead;}
+    public void setIsRead(int isRead){this.isRead=isRead;}
     public int getType() {
         return type;
     }

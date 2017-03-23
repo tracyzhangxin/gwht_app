@@ -13,22 +13,41 @@ import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageView;
+import android.widget.Toast;
 
-public class NewsDetail extends AppCompatActivity {
+import org.xutils.view.annotation.ContentView;
+import org.xutils.view.annotation.Event;
+import org.xutils.view.annotation.ViewInject;
 
+import Model.NewsModel;
+import org.xutils.x;
+@ContentView(R.layout.activity_news_detail)
+public class NewsDetail extends BaseActivity {
+    @ViewInject(R.id.toolbar)
+    private Toolbar toolbar;
+    @ViewInject(R.id.webview)
     private WebView webview;
+    @ViewInject(R.id.collectTab)
+    private ImageView collectTab;
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        setContentView(R.layout.activity_news_detail);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+         toolbar.setNavigationIcon(R.drawable.left_arrow);
+         toolbar.setNavigationOnClickListener(new Toolbar.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 onBackPressed();
+             }
+         });
+        //setContentView(R.layout.activity_news_detail);
         Intent intent = getIntent();
         String url = intent.getExtras().getString("url");
-        webview = (WebView) findViewById(R.id.webview);
+       /* webview = (WebView) findViewById(R.id.webview);*/
         WebSettings webSettings = webview.getSettings();
         //设置WebView属性，能够执行Javascript脚本
         webSettings.setJavaScriptEnabled(true);
@@ -70,6 +89,11 @@ public class NewsDetail extends AppCompatActivity {
             view.loadUrl(url);
             return true;
         }
+    }
+
+    @Event(value = R.id.collectTab)
+    private void onSinginClick(View view) {
+        Toast.makeText(x.app(), "收藏成功", Toast.LENGTH_LONG).show();
     }
 
 }

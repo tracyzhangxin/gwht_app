@@ -23,8 +23,16 @@ public class PreferenceUtil {
         setParam(context,"userid",UserId);
         return true;
     }
-
-
+    //保存或者修改numberBadgeItem
+    public static boolean saveNumberBadgeItem(Context context,int number){
+        setParam(context,"numberBadgeItem",number);
+        return true;
+    }
+    //获取numberBadgeItem
+    public static int getNumberBadgeItem(Context context){
+        int number=Integer.valueOf(getParam(context,"numberBadgeItem","").toString());
+        return number;
+    }
     //检查token判断是否登录
     public static boolean checkIfLogin(Context context) {
         SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
@@ -44,6 +52,7 @@ public class PreferenceUtil {
         setParam(context, "runtime", ui.runtime);
         return true;
     }
+
 
     //获取用户信息
     public static Map<String, String> getUserInfo(Context context) {

@@ -2,6 +2,7 @@ package Tools;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -57,5 +58,14 @@ public class NewsOpenHelper extends SQLiteOpenHelper {
 
 
     }
+    public  int getNoReadNum(){
+        SQLiteDatabase db=this.getWritableDatabase();
+        Cursor c=db.rawQuery("select count(*) from "+NewsOpenHelper.TABLE_NAME+" where isRead=0",null);
+        int num=0;
+        if (c.moveToFirst())
+           num=c.getInt(0);
+        db.close();
+        return num;
 
+    }
 }

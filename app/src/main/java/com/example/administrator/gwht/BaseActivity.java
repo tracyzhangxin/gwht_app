@@ -9,9 +9,15 @@ import android.view.View;
 
 import com.baidu.android.pushservice.PushConstants;
 import com.baidu.android.pushservice.PushManager;
+import com.baidu.android.pushservice.PushMessageReceiver;
+
 import Tools.AppApi;
 
 import org.xutils.x;
+
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class BaseActivity extends AppCompatActivity {
 
@@ -20,6 +26,10 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         x.view().inject(this);
         PushManager.startWork(getApplicationContext(), PushConstants.LOGIN_TYPE_API_KEY, AppApi.Apikey);
+        List<String> list=new ArrayList<String>();
+        list.add("web");
+        list.add("system");
+        PushManager.setTags(this,list);
     }
 
 }
