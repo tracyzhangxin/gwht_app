@@ -33,6 +33,7 @@ public class UserFragment extends Fragment {
                 // TODO Auto-generated method stub
                 Intent intent = new Intent(getActivity(), RegisterActivity.class);
                 startActivity(intent);
+                //
             }
         });
 
