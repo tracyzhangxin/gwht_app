@@ -11,7 +11,7 @@
             android:id="@+id/lv1_pic"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/ic_launcher"
+            android:src="@mipmap/chrome"
             />
         <TextView
             android:id="@+id/lv1_title"
@@ -22,15 +22,16 @@
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:text="TextView"
+            android:maxLength="9"
             android:gravity="center_vertical"
             android:textColor="@color/red"
             android:textSize="18sp" />
     </RelativeLayout>
-    <View
+   <!-- <View
         android:layout_width="wrap_content"
         android:layout_height="2.0dip"
         android:layout_marginTop="0dp"
         />
-
+-->
 
 </LinearLayout>

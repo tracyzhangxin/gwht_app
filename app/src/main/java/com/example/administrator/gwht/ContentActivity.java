@@ -144,6 +144,7 @@ public class ContentActivity extends BaseActivity implements  BottomNavigationBa
           if (newsModel.code==0){
             NewsOpenHelper myHelper = new NewsOpenHelper(this, NewsOpenHelper.DB_NAME, null, 1);// 打开数据表库表
             boolean flag=myHelper.insertNews(newsModel.data);
+              //Toast.makeText(this,newsModel.data.isRead,Toast.LENGTH_LONG).show();
             if (true)
                 Toast.makeText(this,"ok",Toast.LENGTH_LONG).show();
         }

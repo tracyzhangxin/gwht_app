@@ -7,8 +7,10 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -21,15 +23,25 @@ import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 
 import Model.NewsModel;
+import Tools.NewsOpenHelper;
+
 import org.xutils.x;
+
+import java.util.ArrayList;
+import java.util.List;
+
 @ContentView(R.layout.activity_news_detail)
 public class NewsDetail extends BaseActivity {
     @ViewInject(R.id.toolbar)
     private Toolbar toolbar;
     @ViewInject(R.id.webview)
     private WebView webview;
-    @ViewInject(R.id.collectTab)
-    private ImageView collectTab;
+    @ViewInject(R.id.collectTabOn)
+    private ImageView collectTabOn;
+    private NewsOpenHelper myHelper;
+    private String url;
+    private int isCollect;
+
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -44,10 +56,14 @@ public class NewsDetail extends BaseActivity {
                  onBackPressed();
              }
          });
+        myHelper = new NewsOpenHelper(this, NewsOpenHelper.DB_NAME, null, 1);// 打开数据表库表，
         //setContentView(R.layout.activity_news_detail);
         Intent intent = getIntent();
-        String url = intent.getExtras().getString("url");
+        url = intent.getExtras().getString("url");
+        isCollect=intent.getExtras().getInt("isCollect");
+        //Toast.makeText(this,isCollect+"",Toast.LENGTH_LONG).show();
        /* webview = (WebView) findViewById(R.id.webview);*/
+        initview();
         WebSettings webSettings = webview.getSettings();
         //设置WebView属性，能够执行Javascript脚本
         webSettings.setJavaScriptEnabled(true);
@@ -61,7 +77,6 @@ public class NewsDetail extends BaseActivity {
         webview.setWebViewClient(new webViewClient ());
 
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
@@ -91,9 +106,39 @@ public class NewsDetail extends BaseActivity {
         }
     }
 
-    @Event(value = R.id.collectTab)
-    private void onSinginClick(View view) {
-        Toast.makeText(x.app(), "收藏成功", Toast.LENGTH_LONG).show();
+    @Event(value = R.id.collectTabOn)
+    private void onSinginClickOn(View view) {
+        isCollect=(isCollect+1)%2;
+        initview();
+        //collectTabOn.setImageResource(R.mipmap.star);
+         if(myHelper.updateCollect(url,isCollect))
+             this.showToast();
+        else
+             Toast.makeText(this,"操作失败",Toast.LENGTH_LONG).show();
+
     }
+    private void showToast(){
+        switch (isCollect){
+            case 0:
+                Toast.makeText(this,"取消收藏",Toast.LENGTH_LONG).show();
+                break;
+            case 1:
+                Toast.makeText(this,"收藏成功",Toast.LENGTH_LONG).show();
+                break;
+        }
+    }
+
+    private void initview(){
+        switch (isCollect){
+            case 0:
+                collectTabOn.setImageResource(R.mipmap.favourity);
+                break;
+            case 1:
+                collectTabOn.setImageResource(R.mipmap.star);
+                break;
+        }
+    }
+
+
 
 }

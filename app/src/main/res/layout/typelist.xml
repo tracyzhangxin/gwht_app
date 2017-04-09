@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <!--  ListView最左边的缩略图 -->
+    <LinearLayout android:id="@+id/thumbnail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="3dip"
+        android:layout_alignParentLeft="true"
+        android:layout_marginRight="5dip">
+
+        <ImageView
+            android:id="@+id/lvl_logo"
+            android:layout_width="50dip"
+            android:layout_height="50dip"
+            android:src="@mipmap/chrome"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/thumbnail">
+        <!-- 歌曲名-->
+        <TextView
+            android:id="@+id/lv1_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/thumbnail"
+            android:layout_toRightOf="@+id/thumbnail"
+            android:text="Rihanna Love the way lie"
+            android:textColor="#040404"
+            android:typeface="sans"
+            android:textSize="15dip"
+            android:textStyle="bold"/>
+
+        <!-- 歌手名 -->
+        <TextView
+            android:id="@+id/lv1_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/lv1_title"
+            android:textColor="#343434"
+            android:textSize="10dip"
+            android:layout_marginTop="1dip"
+            android:text="Just gona stand there and ..." />
+
+
+    </LinearLayout>
+
+
+    <!-- 进入播放 -->
+    <Button
+        android:id="@+id/lv1_btn"
+        android:layout_width="54dp"
+        android:layout_height="34dp"
+        android:width="50dp"
+        android:text="+订阅"
+        android:textColor="@color/white"
+        android:background="@drawable/shape"
+        android:height="34dp"
+        android:textSize="15dip"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true">
+    </Button>
+
+</RelativeLayout>

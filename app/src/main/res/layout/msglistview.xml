@@ -11,7 +11,7 @@
         android:layout_marginTop="0dip"
         android:gravity="center"
         android:background="#727272"
-        android:text="web安全"
+        android:text="移动安全"
         android:textColor="#FFFFFF"
         android:textStyle="bold"
         android:textSize="10sp"

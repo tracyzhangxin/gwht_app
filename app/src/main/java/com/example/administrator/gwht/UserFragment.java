@@ -10,12 +10,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import java.lang.reflect.Type;
 
 
 public class UserFragment extends Fragment {
 
     private ImageView toLogin;
+    private LinearLayout  subscribeBtn;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -34,6 +38,14 @@ public class UserFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), RegisterActivity.class);
                 startActivity(intent);
                 //
+            }
+        });
+        subscribeBtn=(LinearLayout)getActivity().findViewById(R.id.subscribeBtn);
+        subscribeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), TypeActivity.class);
+                startActivity(intent);
             }
         });
 

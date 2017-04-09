@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import Model.NewsModel;
 import Msg.LayoutMessage;
 import Msg.MyAdapter;
 import Tools.NewsOpenHelper;
@@ -73,10 +74,13 @@ public class MsgFragment extends Fragment {
             public void onItemClick(AdapterView<?> arg0, View arg1, int p,
                                     long arg3) {
                 // TODO Auto-generated method stub
-                
+                Bundle bundle=new Bundle();
                 String url = contentlist.get(p).getUrl().toString();
+                int isCollect=contentlist.get(p).getIsCollect();
+                bundle.putInt("isCollect",isCollect);
                 Intent intent = new Intent(getContext(), NewsDetail.class);
                 intent.putExtra("url", url);
+                intent.putExtras(bundle);
                 startActivity(intent);
               /*  Toast.makeText(getActivity(),url, Toast.LENGTH_LONG).show();*/
             }
@@ -108,23 +112,27 @@ public class MsgFragment extends Fragment {
 
 
        Cursor c = db.query(NewsOpenHelper.TABLE_NAME, new String[]{
-                       NewsOpenHelper.NEWSID, NewsOpenHelper.TITLE, NewsOpenHelper.DESCRIBTION,
+                       NewsOpenHelper.NEWSID, NewsOpenHelper.TITLE,
+                       NewsOpenHelper.DESCRIBTION,NewsOpenHelper.ISCOLLECT,
                        NewsOpenHelper.URL, NewsOpenHelper.ISREAD}, null, null,
                null, null, NewsOpenHelper.NEWSID+" desc", "0,"+limitNum);
         int idindex=c.getColumnIndex(NewsOpenHelper.TITLE);
         int pwdindex=c.getColumnIndex(NewsOpenHelper.DESCRIBTION);
         int urlindex=c.getColumnIndex(NewsOpenHelper.URL);
         int isreadindex=c.getColumnIndex(NewsOpenHelper.ISREAD);
+        int iscollectindex=c.getColumnIndex(NewsOpenHelper.ISCOLLECT);
         while(c.moveToNext()){
             String title = c.getString(idindex);
             String desc = c.getString(pwdindex);
             String url=c.getString(urlindex);
             int isRead=c.getInt(isreadindex);
+            int isCollect=c.getInt(iscollectindex);
             msg = new LayoutMessage();
             msg.setIsRead(isRead);
+            msg.setIsCollect(isCollect);
             msg.setTag(1);
             msg.setType(MyAdapter.LV_NO_PIC);
-            msg.setTitle(title+isRead);
+            msg.setTitle(title);
             msg.setContent(desc);
             msg.setUrl(url);
             //Toast.makeText(getActivity(),url, Toast.LENGTH_LONG).show();

@@ -116,7 +116,15 @@ public class RegisterActivity extends BaseActivity {
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        return password.length() >= 4;
+        int i = password.matches(".*\\d+.*") ? 1 : 0;
+        int j = password.matches(".*[a-zA-Z]+.*") ? 1 : 0;
+        int k = password.matches(".*[~!@#$%^&*()_+|<>,.?/:;'\\[\\]{}\"]+.*") ? 1 : 0;
+        int l = password.length();
+        if (i + j + k < 2 || l < 6 || l > 16 ) {
+            return false;
+        }else{
+            return true;
+        }
     }
     private boolean isPasswordAgainValid(String password,String pwdAgain) {
         //TODO: Replace this with your own logic
