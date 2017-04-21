@@ -2,6 +2,7 @@ package com.example.administrator.gwht;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -38,7 +39,8 @@ import java.util.Map;
 import Msg.LayoutMessage;
 import Msg.MyAdapter;
 import Tools.NewsOpenHelper;
-
+import android.content.SharedPreferences;
+import Tools.PreferenceUtil;
 
 public class LoveFragment extends Fragment {
     private ListView lv;
@@ -52,6 +54,11 @@ public class LoveFragment extends Fragment {
     private NewsOpenHelper myHelper;
     private PullToRefreshListView mPullRefreshListView;
     private int limitNum=5;
+
+    public static final String SP_INFOS = "SPDATA_Files";
+    public static final String USERID = "UserID";
+    SharedPreferences sp;
+    String uid ; // 取Preferences中的帐号
 
     private ImageView iv_more;
     List<Map<String, String>> moreList;
@@ -89,8 +96,9 @@ public class LoveFragment extends Fragment {
 
         Cursor c = db.query(NewsOpenHelper.TABLE_NAME, new String[]{
                         NewsOpenHelper.NEWSID, NewsOpenHelper.TITLE, NewsOpenHelper.DESCRIBTION,
-                        NewsOpenHelper.URL, NewsOpenHelper.ISREAD}, null, null,
-                null, null, NewsOpenHelper.NEWSID+" desc", "0,"+limitNum);
+                        NewsOpenHelper.URL, NewsOpenHelper.ISREAD}, NewsOpenHelper.ISCOLLECT+"=? and "
+                        +NewsOpenHelper.USERNAME+"=?",
+                new String[]{"1",uid}, null, null, NewsOpenHelper.NEWSID+" desc", "0,"+limitNum);
         int idindex=c.getColumnIndex(NewsOpenHelper.TITLE);
         int pwdindex=c.getColumnIndex(NewsOpenHelper.DESCRIBTION);
         int urlindex=c.getColumnIndex(NewsOpenHelper.URL);
@@ -122,7 +130,8 @@ public class LoveFragment extends Fragment {
     }
 
     private void initData() {
-
+        sp = getActivity().getSharedPreferences(SP_INFOS, getActivity().MODE_PRIVATE);
+        uid = sp.getString(USERID, null); // 取Preferences中的帐号
         contentlist = new ArrayList<LayoutMessage>(getMyData());
         adapter = getAdapter();
 
@@ -135,7 +144,7 @@ public class LoveFragment extends Fragment {
 
     private void initviews() {
         // TODO Auto-generated method stub
-        /*lv = (ListView) getActivity().findViewById(R.id.health_news_lv);
+       /* lv = (ListView) getActivity().findViewById(R.id.listView);
         lv.setAdapter(adapter);*/
 
         SwipeMenuCreator creator = new SwipeMenuCreator() {

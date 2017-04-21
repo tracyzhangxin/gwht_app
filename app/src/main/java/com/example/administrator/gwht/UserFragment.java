@@ -2,8 +2,11 @@ package com.example.administrator.gwht;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -12,11 +15,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.File;
 import java.lang.reflect.Type;
 
 
 public class UserFragment extends Fragment {
+
+
 
     private ImageView toLogin;
     private LinearLayout  subscribeBtn;
@@ -35,7 +42,7 @@ public class UserFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                Intent intent = new Intent(getActivity(), RegisterActivity.class);
+                Intent intent = new Intent(getActivity(), InfoActivity.class);
                 startActivity(intent);
                 //
             }
@@ -58,4 +65,6 @@ public class UserFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+
+
 }

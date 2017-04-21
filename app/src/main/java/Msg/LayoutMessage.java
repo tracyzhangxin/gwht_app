@@ -16,6 +16,9 @@ public class LayoutMessage {
     private int isCollect;
     private Bitmap pic_net;
     private String url;
+    private String typeid;
+    public String getTypeid(){return this.typeid;}
+    public void setTypeid(String typeid){this.typeid=typeid;}
     public int getImage(){return this.image;}
     public void setImage(int image){this.image=image;}
     public int getIsCollect(){

@@ -11,9 +11,11 @@ import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.ViewInject;
+import org.xutils.x;
 
 @ContentView(R.layout.activity_news)
 public class NewsActivity extends BaseActivity {
@@ -38,9 +40,10 @@ public class NewsActivity extends BaseActivity {
             }
         });
 
-      /*  Intent intent = getIntent();
-        String url = intent.getExtras().getString("url");
-       *//* webview = (WebView) findViewById(R.id.webview);*//*
+        Intent intent = getIntent();
+        String url = intent.getStringExtra("url");
+        Toast.makeText(x.app(), url, Toast.LENGTH_LONG).show();
+       /* webview = (WebView) findViewById(R.id.webview);*//*
         WebSettings webSettings = webview.getSettings();
         //设置WebView属性，能够执行Javascript脚本
         webSettings.setJavaScriptEnabled(true);

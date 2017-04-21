@@ -1,8 +1,11 @@
 package com.example.administrator.gwht;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -23,6 +26,7 @@ import com.google.gson.Gson;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.ViewInject;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import Model.NewsModel;
@@ -39,11 +43,17 @@ public class ContentActivity extends BaseActivity implements  BottomNavigationBa
             .setBorderWidth(4)
             .setBackgroundColor(Color.RED)
             .setHideOnSelect(false);
+    public static final String SP_INFOS = "SPDATA_Files";
+    public static final String USERID = "UserID";
+    SharedPreferences sp;
+    String uid ; // 取Preferences中的帐号
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
+        sp = getSharedPreferences(SP_INFOS, MODE_PRIVATE);
+        uid = sp.getString(USERID, null); // 取Preferences中的帐号
        /* toolbar.setNavigationIcon(R.drawable.left_arrow);
          toolbar.setNavigationOnClickListener(new Toolbar.OnClickListener() {
              @Override
@@ -96,7 +106,7 @@ public class ContentActivity extends BaseActivity implements  BottomNavigationBa
 
     @Override
     public void onTabSelected(int position) {
-        updateNumberItem();
+       // updateNumberItem();
         if (fragments != null) {
             if (position < fragments.size()) {
                 FragmentManager fm = getSupportFragmentManager();
@@ -143,18 +153,19 @@ public class ContentActivity extends BaseActivity implements  BottomNavigationBa
         NewsModel newsModel =NewsJsonHelper.pushJsonDecode(content);
           if (newsModel.code==0){
             NewsOpenHelper myHelper = new NewsOpenHelper(this, NewsOpenHelper.DB_NAME, null, 1);// 打开数据表库表
-            boolean flag=myHelper.insertNews(newsModel.data);
+            boolean flag=myHelper.insertNews(newsModel.data,this);
               //Toast.makeText(this,newsModel.data.isRead,Toast.LENGTH_LONG).show();
-            if (true)
-                Toast.makeText(this,"ok",Toast.LENGTH_LONG).show();
+           /* if (true)
+                Toast.makeText(this,"ok",Toast.LENGTH_LONG).show();*/
+              this.recreate();
         }
-        updateNumberItem();
+       // updateNumberItem();
 
     }
     //接收到新的信息时numberBadgeItem+1
     public void updateNumberItem(){
        NewsOpenHelper myHelper = new NewsOpenHelper(this, NewsOpenHelper.DB_NAME, null, 1);// 打开数据表库表，
-        int num=myHelper.getNoReadNum();
+        int num=myHelper.getNoReadNum(uid);
         if (num==0)
             numberBadgeItem.hide();
         else{
@@ -162,6 +173,8 @@ public class ContentActivity extends BaseActivity implements  BottomNavigationBa
         }
 
     }
+
+
 
 
 }

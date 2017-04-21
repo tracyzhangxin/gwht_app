@@ -17,4 +17,13 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="pushSwitch" parent="Theme.AppCompat.Light">
+        <!-- switch 打开时的按钮的颜色 轨迹颜色默认为30%（看效果就明白30%是怎么回事了）这个颜色 -->
+        <item name="colorControlActivated">@color/colotTab</item>
+
+        <!-- switch关闭时的轨迹的颜色 30%这个颜色 -->
+        <item name="android:colorForeground">@color/colorPrimaryDark</item>
+
+    </style>
+
 </resources>

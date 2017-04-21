@@ -3,10 +3,13 @@ package com.example.administrator.gwht;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.baidu.android.pushservice.PushMessageReceiver;
 
 import java.util.List;
+
+import Model.NewsModel;
 import Tools.PreferenceUtil;
 
 /**
@@ -62,7 +65,7 @@ public class PushTestReceiver extends PushMessageReceiver {
                           String customContentString) {
         String messageString = "透传消息 message=\"" + message
                 + "\" customContentString=" + customContentString;
-        updateContent(context,message);
+        updateContent(context, message);
         Log.d(TAG, messageString);
 
     }
@@ -85,6 +88,9 @@ public class PushTestReceiver extends PushMessageReceiver {
         String notifyString = "通知点击 title=\"" + title + "\" description=\""
                 + description + "\" customContent=" + customContentString;
         Log.d(TAG, notifyString);
+        //updateContent(context, customContentString);
+        jumpNews(context,customContentString);
+
 
 
     }
@@ -109,6 +115,7 @@ public class PushTestReceiver extends PushMessageReceiver {
         String notifyString = "onNotificationArrived  title=\"" + title
                 + "\" description=\"" + description + "\" customContent="
                 + customContentString;
+        //updateContent(context,customContentString);
         Log.d(TAG, notifyString);
 
 
@@ -208,6 +215,14 @@ public class PushTestReceiver extends PushMessageReceiver {
         Intent intent = new Intent();
         intent.putExtra("pushStr", content);
         intent.setClass(context.getApplicationContext(), ContentActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.getApplicationContext().startActivity(intent);
+    }
+    private void jumpNews(Context context, String content){
+        Log.d(TAG, "updateContent");
+        Intent intent = new Intent();
+        intent.putExtra("url", "http://www.freebuf.com/news/127203.html");
+        intent.setClass(context.getApplicationContext(), NewsDetail.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.getApplicationContext().startActivity(intent);
     }

@@ -27,6 +27,7 @@ public class MyAdapter extends BaseAdapter {
     public static final int LV_TYPE_PIC = 2;
     private LayoutInflater mInflater;
 
+
     private List<LayoutMessage> myList;
 
     public MyAdapter(Context context, List<LayoutMessage> myList) {
@@ -60,8 +61,8 @@ public class MyAdapter extends BaseAdapter {
     }
 
     class ViewCollect{
-        private ImageView iv_newspic;
-        private TextView tv_title;//标题
+        private TextView tv_title;//标题xt
+        private TextView tv_content;//内容
 
     }
     class ViewType{
@@ -109,7 +110,7 @@ public class MyAdapter extends BaseAdapter {
                     break;
                 case LV_Collect:
                     holderCollect=new ViewCollect();
-                    convertView = mInflater.inflate(R.layout.collectlistview,
+                    convertView = mInflater.inflate(R.layout.lovelistview,
                             null);
                     holderCollect.tv_title = (TextView) convertView
                             .findViewById(R.id.lv1_title);
@@ -122,6 +123,10 @@ public class MyAdapter extends BaseAdapter {
                     }*/
                    /* holderCollect.iv_newspic.setImageResource(R.drawable.android_smaller);*/
                     holderCollect.tv_title.setText(msg.getTitle());
+                    holderCollect.tv_content=(TextView)convertView
+                            .findViewById(R.id.lv1_content);
+                    holderCollect.tv_content.setText(msg.getContent());
+
                     break;
                 case LV_TYPE_PIC:
                     holderType=new ViewType();
@@ -185,6 +190,8 @@ public class MyAdapter extends BaseAdapter {
     public int getViewTypeCount() {
         return 3;
     }
+
+
 
 
 }

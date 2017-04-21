@@ -42,6 +42,7 @@ public class NewsDetail extends BaseActivity {
     private String url;
     private int isCollect;
 
+
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -129,6 +130,7 @@ public class NewsDetail extends BaseActivity {
     }
 
     private void initview(){
+        boolean flag;
         switch (isCollect){
             case 0:
                 collectTabOn.setImageResource(R.mipmap.favourity);

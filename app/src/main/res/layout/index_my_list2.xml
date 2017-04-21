@@ -6,28 +6,6 @@
     android:background="@color/white" >
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        android:gravity="center_vertical"
-        android:padding="@dimen/normal_space" >
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:drawablePadding="3dp"
-            android:gravity="center_vertical"
-            android:text="我的资料"
-            android:textSize="@dimen/text_size_default" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/hui_discount_item_rule_arrow" />
-    </LinearLayout>
-
     <View
         android:layout_width="match_parent"
         android:layout_height="8dp"
@@ -81,7 +59,7 @@
             android:layout_weight="1"
             android:drawablePadding="3dp"
             android:gravity="center_vertical"
-            android:text="最近浏览"
+            android:text="修改信息"
             android:textSize="@dimen/text_size_default" />
 
         <TextView
@@ -116,21 +94,27 @@
             android:layout_weight="1"
             android:drawablePadding="3dp"
             android:gravity="center_vertical"
-            android:text="设置"
+            android:text="开启推送"
             android:textSize="@dimen/text_size_default" />
 
-        <TextView
+        <!--<TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
             android:gravity="center_vertical"
-            android:text="NEW" />
+            android:text="NEW" />-->
 
 
-        <ImageView
+        <android.support.v7.widget.SwitchCompat
+            android:checked="false"
+            android:textOn="开"
+            android:textOff="关"
+            android:typeface="normal"
+            android:theme="@style/pushSwitch"
+            android:switchMinWidth="40dp"
+            android:switchPadding="10dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/hui_discount_item_rule_arrow" />
+            android:layout_height="wrap_content"/>
     </LinearLayout>
 
     <View
@@ -184,7 +168,9 @@
         android:textColor="@color/white"
         android:textSize="20dp"
         android:textStyle="bold"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"/>
 
 
 </LinearLayout>

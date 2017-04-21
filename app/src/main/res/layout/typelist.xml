@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
+    android:descendantFocusability="blocksDescendants"
     android:orientation="horizontal">
 
     <!--  ListView最左边的缩略图 -->
@@ -64,6 +65,8 @@
         android:background="@drawable/shape"
         android:height="34dp"
         android:textSize="15dip"
+        android:focusable="false"
+        android:clickable="true"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true">
     </Button>

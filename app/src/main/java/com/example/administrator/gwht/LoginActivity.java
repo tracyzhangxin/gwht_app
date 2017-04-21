@@ -163,7 +163,7 @@ public class LoginActivity extends BaseActivity {
     }
 
     /** 请求后台进行登录 **/
-    private void userLogin(String email, String password) {
+    private void userLogin(final String email, final String password) {
 
         RequestParams requestParams = new RequestParams(AppApi.LOGIN_URL);
         requestParams.addBodyParameter("userid", email);
@@ -179,6 +179,11 @@ public class LoginActivity extends BaseActivity {
                 if (data.code == 0) {
                     //登录成功
                     UserInfoModel ui = data.data;
+                    SharedPreferences sp = getSharedPreferences(SP_INFOS, MODE_PRIVATE);
+                    // 获得Preferences
+                    SharedPreferences.Editor editor = sp.edit(); // 获得Editor
+                    editor.putString(USERID, email); // 将用户的帐号存入Preferences
+                    editor.putString(PASSWORD,password); // 将密码存入Preferences
                     //Toast.makeText(x.app(), data.data.pwd, Toast.LENGTH_LONG).show();
                     if (PreferenceUtil.saveUserInfo(_this, ui)) {
                         Toast.makeText(x.app(), "登录成功", Toast.LENGTH_LONG).show();

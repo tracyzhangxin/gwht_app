@@ -3,6 +3,7 @@ package com.example.administrator.gwht;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
@@ -51,6 +52,9 @@ public class MsgFragment extends Fragment {
     private NewsOpenHelper myHelper;
     private PullToRefreshListView mPullRefreshListView;
     private int limitNum=5;
+
+    public static final String SP_INFOS = "SPDATA_Files";
+    public static final String USERID = "UserID";
 
     private ImageView iv_more;
     List<Map<String, String>> moreList;
@@ -110,21 +114,26 @@ public class MsgFragment extends Fragment {
         values.put(NewsOpenHelper.RUNTIME, "20131012");
       /*  long rid = db.insert(NewsOpenHelper.TABLE_NAME, NewsOpenHelper.NEWSID, values); // 插入数据*/
 
+        SharedPreferences sp = getActivity().getSharedPreferences(SP_INFOS, getActivity().MODE_PRIVATE);
+        String uid = sp.getString(USERID, null); // 取Preferences中的帐号
 
        Cursor c = db.query(NewsOpenHelper.TABLE_NAME, new String[]{
                        NewsOpenHelper.NEWSID, NewsOpenHelper.TITLE,
                        NewsOpenHelper.DESCRIBTION,NewsOpenHelper.ISCOLLECT,
-                       NewsOpenHelper.URL, NewsOpenHelper.ISREAD}, null, null,
+                       NewsOpenHelper.URL, NewsOpenHelper.ISREAD,NewsOpenHelper.USERNAME},
+               NewsOpenHelper.USERNAME+"=?",new String[]{uid} ,
                null, null, NewsOpenHelper.NEWSID+" desc", "0,"+limitNum);
         int idindex=c.getColumnIndex(NewsOpenHelper.TITLE);
         int pwdindex=c.getColumnIndex(NewsOpenHelper.DESCRIBTION);
         int urlindex=c.getColumnIndex(NewsOpenHelper.URL);
         int isreadindex=c.getColumnIndex(NewsOpenHelper.ISREAD);
         int iscollectindex=c.getColumnIndex(NewsOpenHelper.ISCOLLECT);
+        int uidindex=c.getColumnIndex(NewsOpenHelper.USERNAME);
         while(c.moveToNext()){
             String title = c.getString(idindex);
             String desc = c.getString(pwdindex);
             String url=c.getString(urlindex);
+            String username=c.getString(uidindex);
             int isRead=c.getInt(isreadindex);
             int isCollect=c.getInt(iscollectindex);
             msg = new LayoutMessage();
@@ -132,10 +141,10 @@ public class MsgFragment extends Fragment {
             msg.setIsCollect(isCollect);
             msg.setTag(1);
             msg.setType(MyAdapter.LV_NO_PIC);
-            msg.setTitle(title);
+            msg.setTitle(title + username);
             msg.setContent(desc);
             msg.setUrl(url);
-            //Toast.makeText(getActivity(),url, Toast.LENGTH_LONG).show();
+           /* Toast.makeText(getActivity(),username, Toast.LENGTH_LONG).show();*/
             msgList.add(msg);
 
         }
