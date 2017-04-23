@@ -23,6 +23,7 @@ public class NewsOpenHelper extends SQLiteOpenHelper {
     public static final String TITLE = "Title"; // 字段：标题
     public static final String DESCRIBTION = "Descbrition"; //字段： 简介
     public static final String URL = "Url"; //字段：连接
+    public static final String TYPENAME="Typename";
     public static final String RUNTIME = "runtime"; //字段：时间
     public static final String USERNAME="username";
     public static final String ISREAD="isRead";
@@ -40,9 +41,10 @@ public class NewsOpenHelper extends SQLiteOpenHelper {
                 + TABLE_NAME
                 + " (" // 调用execSQL方法创建表
                 + NEWSID + " INTEGER  primary key," + TITLE + " varchar(100),"
-                +USERNAME+" varchar(100),"
+                + USERNAME + " varchar(100),"
+                +TYPENAME+" varchar(20),"
                 + DESCRIBTION + " varchar(500)," + URL + " varchar(100)," + ISREAD + " int default 0,"
-                +ISCOLLECT+" int default 0,"
+                + ISCOLLECT + " int default 0,"
                 + RUNTIME + " varchar(100))");
 
     }
@@ -60,11 +62,12 @@ public class NewsOpenHelper extends SQLiteOpenHelper {
         values.put("Descbrition",news.desc);
         values.put("Url",news.url);
         values.put("runtime",news.runtime);
-        values.put("isRead",news.isRead);
-        values.put("isCollect",news.isCollect);
+        values.put("isRead",0);
+        values.put("typename",news.typename);
+        values.put("isCollect",0);
 
         SharedPreferences sp = context.getSharedPreferences(SP_INFOS, context.MODE_PRIVATE);
-        String uid = sp.getString(USERID, null); // 取Preferences中的帐号
+        String uid = sp.getString(USERID, ""); // 取Preferences中的帐号
         values.put("username",uid);
         long rid=db.insert(this.TABLE_NAME, this.NEWSID, values);
         db.close();
@@ -90,13 +93,30 @@ public class NewsOpenHelper extends SQLiteOpenHelper {
 
     }
 
-    public Boolean updateCollect(String url,int isCollect){
+    public Boolean updateCollect(int id,int isCollect){
         SQLiteDatabase db=this.getWritableDatabase();
         ContentValues cv=new ContentValues();
         cv.put(ISCOLLECT,isCollect);
         int flag=0;
         try{
-            flag=db.update(TABLE_NAME, cv, URL + "=?", new String[]{url});
+            flag=db.update(TABLE_NAME, cv, NEWSID + "=?", new String[]{String.valueOf(id)});
+        }catch (Exception e){
+
+        }
+        if(flag>0)
+            return true;
+        else
+            return false;
+
+    }
+
+    public Boolean deleteLove(int id){
+        SQLiteDatabase db=this.getWritableDatabase();
+        ContentValues cv=new ContentValues();
+        cv.put(ISCOLLECT,0);
+        int flag=0;
+        try{
+            flag=db.update(TABLE_NAME, cv, NEWSID + "=?", new String[]{String.valueOf(id)});
         }catch (Exception e){
 
         }

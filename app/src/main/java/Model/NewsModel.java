@@ -14,6 +14,7 @@ public class NewsModel extends BaseModel{
         public String url;
         public String runtime;
         public int isRead;
+        public String typename;
         public int isCollect;
         public News(Map newsinfo) {
             this.id=Integer.valueOf(newsinfo.get("id").toString());
@@ -23,6 +24,7 @@ public class NewsModel extends BaseModel{
             this.runtime=newsinfo.get("runtime").toString();
             this.isRead=Integer.valueOf(newsinfo.get("isRead").toString());
             this.isCollect=Integer.valueOf(newsinfo.get("isCollect").toString());
+            this.typename=newsinfo.get("typename").toString();
 
         }
         public News(){

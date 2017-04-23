@@ -78,15 +78,17 @@ public class MsgFragment extends Fragment {
             public void onItemClick(AdapterView<?> arg0, View arg1, int p,
                                     long arg3) {
                 // TODO Auto-generated method stub
-                Bundle bundle=new Bundle();
+                Bundle bundle = new Bundle();
                 String url = contentlist.get(p).getUrl().toString();
-                int isCollect=contentlist.get(p).getIsCollect();
-                bundle.putInt("isCollect",isCollect);
+                int isCollect = contentlist.get(p).getIsCollect();
+                int id = contentlist.get(p).getId();
+                bundle.putInt("isCollect", isCollect);
+                bundle.putInt("id", id);
                 Intent intent = new Intent(getContext(), NewsDetail.class);
                 intent.putExtra("url", url);
                 intent.putExtras(bundle);
                 startActivity(intent);
-              /*  Toast.makeText(getActivity(),url, Toast.LENGTH_LONG).show();*/
+               // Toast.makeText(getActivity(), id + "", Toast.LENGTH_LONG).show();
             }
 
         });
@@ -115,14 +117,16 @@ public class MsgFragment extends Fragment {
       /*  long rid = db.insert(NewsOpenHelper.TABLE_NAME, NewsOpenHelper.NEWSID, values); // 插入数据*/
 
         SharedPreferences sp = getActivity().getSharedPreferences(SP_INFOS, getActivity().MODE_PRIVATE);
-        String uid = sp.getString(USERID, null); // 取Preferences中的帐号
+        String uid = sp.getString(USERID, ""); // 取Preferences中的帐号
 
        Cursor c = db.query(NewsOpenHelper.TABLE_NAME, new String[]{
-                       NewsOpenHelper.NEWSID, NewsOpenHelper.TITLE,
-                       NewsOpenHelper.DESCRIBTION,NewsOpenHelper.ISCOLLECT,
-                       NewsOpenHelper.URL, NewsOpenHelper.ISREAD,NewsOpenHelper.USERNAME},
-               NewsOpenHelper.USERNAME+"=?",new String[]{uid} ,
-               null, null, NewsOpenHelper.NEWSID+" desc", "0,"+limitNum);
+                       NewsOpenHelper.NEWSID, NewsOpenHelper.TITLE,NewsOpenHelper.TYPENAME,
+                       NewsOpenHelper.DESCRIBTION, NewsOpenHelper.ISCOLLECT,
+                       NewsOpenHelper.URL, NewsOpenHelper.ISREAD, NewsOpenHelper.USERNAME},
+               NewsOpenHelper.USERNAME + "=?", new String[]{uid},
+               null, null, NewsOpenHelper.NEWSID + " desc", "0," + limitNum);
+        int newid=c.getColumnIndex(NewsOpenHelper.NEWSID);
+        int typeindex=c.getColumnIndex(NewsOpenHelper.TYPENAME);
         int idindex=c.getColumnIndex(NewsOpenHelper.TITLE);
         int pwdindex=c.getColumnIndex(NewsOpenHelper.DESCRIBTION);
         int urlindex=c.getColumnIndex(NewsOpenHelper.URL);
@@ -130,33 +134,31 @@ public class MsgFragment extends Fragment {
         int iscollectindex=c.getColumnIndex(NewsOpenHelper.ISCOLLECT);
         int uidindex=c.getColumnIndex(NewsOpenHelper.USERNAME);
         while(c.moveToNext()){
+            int id=c.getInt(newid);
             String title = c.getString(idindex);
             String desc = c.getString(pwdindex);
             String url=c.getString(urlindex);
             String username=c.getString(uidindex);
             int isRead=c.getInt(isreadindex);
             int isCollect=c.getInt(iscollectindex);
+            String typename=c.getString(typeindex);
             msg = new LayoutMessage();
+            msg.setId(id);
             msg.setIsRead(isRead);
+            msg.setTypename(typename);
             msg.setIsCollect(isCollect);
             msg.setTag(1);
             msg.setType(MyAdapter.LV_NO_PIC);
-            msg.setTitle(title + username);
+            msg.setTitle(title);
             msg.setContent(desc);
             msg.setUrl(url);
-           /* Toast.makeText(getActivity(),username, Toast.LENGTH_LONG).show();*/
+            //Toast.makeText(getActivity(),desc, Toast.LENGTH_LONG).show();
             msgList.add(msg);
 
         }
+
         db.close();
 
-       /* msg = new LayoutMessage();
-        msg.setTag(1);
-        msg.setType(MyAdapter.LV_NO_PIC);
-        msg.setTitle(title[0]);
-        msg.setContent(content[0]);
-        msg.setUrl("http://www.mottoin.com/96277.html");
-        msgList.add(msg);*/
 
         return msgList;
 

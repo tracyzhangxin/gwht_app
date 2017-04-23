@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
  * Created by Administrator on 2017/2/18.
  */
 public class LayoutMessage {
+    private int id; //news的id
     private int type;//指定是哪种类型
     private int image;
     private String title;//新闻标题
@@ -17,6 +18,11 @@ public class LayoutMessage {
     private Bitmap pic_net;
     private String url;
     private String typeid;
+    public String typename;
+    public String getTypename(){return this.typename;}
+    public void setTypename(String typename){this.typename=typename;}
+    public int getId(){return this.id;}
+    public void setId(int id){this.id=id;}
     public String getTypeid(){return this.typeid;}
     public void setTypeid(String typeid){this.typeid=typeid;}
     public int getImage(){return this.image;}

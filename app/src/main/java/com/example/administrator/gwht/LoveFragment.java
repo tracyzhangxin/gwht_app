@@ -99,15 +99,18 @@ public class LoveFragment extends Fragment {
                         NewsOpenHelper.URL, NewsOpenHelper.ISREAD}, NewsOpenHelper.ISCOLLECT+"=? and "
                         +NewsOpenHelper.USERNAME+"=?",
                 new String[]{"1",uid}, null, null, NewsOpenHelper.NEWSID+" desc", "0,"+limitNum);
+        int newsid=c.getColumnIndex(NewsOpenHelper.NEWSID);
         int idindex=c.getColumnIndex(NewsOpenHelper.TITLE);
         int pwdindex=c.getColumnIndex(NewsOpenHelper.DESCRIBTION);
         int urlindex=c.getColumnIndex(NewsOpenHelper.URL);
         int isreadindex=c.getColumnIndex(NewsOpenHelper.ISREAD);
         while(c.moveToNext()){
+            int id=c.getInt(newsid);
             String title = c.getString(idindex);
             String desc = c.getString(pwdindex);
             String url=c.getString(urlindex);
             msg = new LayoutMessage();
+            msg.setId(id);
             msg.setTag(1);
             msg.setType(MyAdapter.LV_Collect);
             msg.setTitle(title);
@@ -131,9 +134,15 @@ public class LoveFragment extends Fragment {
 
     private void initData() {
         sp = getActivity().getSharedPreferences(SP_INFOS, getActivity().MODE_PRIVATE);
-        uid = sp.getString(USERID, null); // 取Preferences中的帐号
+        uid = sp.getString(USERID, ""); // 取Preferences中的帐号
         contentlist = new ArrayList<LayoutMessage>(getMyData());
         adapter = getAdapter();
+
+    }
+    private void updateData(){
+        contentlist.clear();
+        contentlist.addAll(getMyData());
+        adapter.notifyDataSetChanged();
 
     }
 
@@ -170,12 +179,16 @@ public class LoveFragment extends Fragment {
             public boolean onMenuItemClick(int position, SwipeMenu menu,int index) {
                 //index的值就是在SwipeMenu依次添加SwipeMenuItem顺序值，类似数组的下标。
                 //从0开始，依次是：0、1、2、3...
+                int typeid=contentlist.get(position).getId();
                 switch (index) {
                     case 0:
-                        Toast.makeText(x.app(), "删除:" + position, Toast.LENGTH_SHORT).show();
+                        Boolean f= myHelper.deleteLove(typeid);
+                        updateData();
+                        Toast.makeText(x.app(), "删除成功" , Toast.LENGTH_SHORT).show();
                         break;
 
                     case 1:
+                        myHelper.deleteLove(typeid);
                         Toast.makeText(x.app(), "删除:"+position,Toast.LENGTH_SHORT).show();
                         break;
                 }

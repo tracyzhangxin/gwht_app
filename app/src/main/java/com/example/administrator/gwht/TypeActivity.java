@@ -230,12 +230,15 @@ public class TypeActivity extends BaseActivity implements AdapterView.OnItemClic
         public void myOnClick(int position, View v) {
             int tag=contentlist.get(position).getTag();
             String type=contentlist.get(position).getTypeid();
+            //SQLiteDatabase db = typeHelper.getWritableDatabase(); // 获得数据库对象
             switch (tag){
                 case 0:
                     contentlist.get(position).setTag(1);
+                    typeHelper.updateSelect(type,1);
                     break;
                 case 1:
                     contentlist.get(position).setTag(0);
+                    typeHelper.updateSelect(type,0);
                     break;
             }
 

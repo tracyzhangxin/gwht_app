@@ -65,6 +65,7 @@
     <string name="title_activity_news">NewsActivity</string>
     <string name="title_activity_type">订阅类型</string>
     <string name="title_activity_info">信息修改</string>
+    <string name="title_activity_splash">GWHT</string>
 
 
 </resources>

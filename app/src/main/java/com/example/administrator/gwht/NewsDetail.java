@@ -41,6 +41,7 @@ public class NewsDetail extends BaseActivity {
     private NewsOpenHelper myHelper;
     private String url;
     private int isCollect;
+    private int id;
 
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -60,9 +61,10 @@ public class NewsDetail extends BaseActivity {
         myHelper = new NewsOpenHelper(this, NewsOpenHelper.DB_NAME, null, 1);// 打开数据表库表，
         //setContentView(R.layout.activity_news_detail);
         Intent intent = getIntent();
+        id=intent.getExtras().getInt("id");
         url = intent.getExtras().getString("url");
         isCollect=intent.getExtras().getInt("isCollect");
-        //Toast.makeText(this,isCollect+"",Toast.LENGTH_LONG).show();
+        //Toast.makeText(x.app(),id+"",Toast.LENGTH_LONG).show();
        /* webview = (WebView) findViewById(R.id.webview);*/
         initview();
         WebSettings webSettings = webview.getSettings();
@@ -112,7 +114,7 @@ public class NewsDetail extends BaseActivity {
         isCollect=(isCollect+1)%2;
         initview();
         //collectTabOn.setImageResource(R.mipmap.star);
-         if(myHelper.updateCollect(url,isCollect))
+         if(myHelper.updateCollect(id,isCollect))
              this.showToast();
         else
              Toast.makeText(this,"操作失败",Toast.LENGTH_LONG).show();
